@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 D:\OOP\OOP_Semester\App.xaml
-31906683733
+41486391670
 
-33-454007259
+352031395810
 212-1816364991
-Views\AuthView.xaml;Views\HomeView.xaml;Views\MainWindow.xaml;
+Views\AuthView.xaml;Views\HomeView.xaml;Views\MainWindow.xaml;Views\TodayView.xaml;
 
 False
 

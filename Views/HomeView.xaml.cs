@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace OOP_Semester.Views // <--- QUAN TRỌNG: Phải trùng với cái MainWindow đang gọi
+namespace OOP_Semester.Views
 {
     public partial class HomeView : UserControl
     {
@@ -8,5 +8,6 @@ namespace OOP_Semester.Views // <--- QUAN TRỌNG: Phải trùng với cái Main
         {
             InitializeComponent();
         }
+
     }
 }

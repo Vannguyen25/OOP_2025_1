@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\System\DefaultAvatar.png" />
     <None Remove="Images\System\Logo.ico" />
     <None Remove="Images\System\Logo.png" />
     <None Remove="Images\System\Main_Pic_Login.png" />
@@ -16,6 +17,9 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Images\Food\" />
+    <Folder Include="Images\UserAvatar\" />
+    <Folder Include="Images\Pet\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\System\DefaultAvatar.png" />
     <Resource Include="Images\System\Logo.ico" />
     <Resource Include="Images\System\Logo.png" />
     <Resource Include="Images\System\Main_Pic_Login.png" />

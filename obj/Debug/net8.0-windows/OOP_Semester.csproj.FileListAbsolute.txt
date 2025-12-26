@@ -39,3 +39,6 @@ D:\OOP\OOP_Semester\obj\Debug\net8.0-windows\Views\MainWindow.g.cs
 D:\OOP\OOP_Semester\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
 D:\OOP\OOP_Semester\obj\Debug\net8.0-windows\OOP_Semester_MarkupCompile.lref
 D:\OOP\OOP_Semester\obj\Debug\net8.0-windows\Views\MainWindow.baml
+D:\OOP\OOP_Semester\obj\Debug\net8.0-windows\OOP_Semester.sourcelink.json
+D:\OOP\OOP_Semester\obj\Debug\net8.0-windows\Views\TodayView.baml
+D:\OOP\OOP_Semester\obj\Debug\net8.0-windows\Views\TodayView.g.cs

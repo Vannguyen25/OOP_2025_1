@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using OOP_Semester.Models;
 using OOP_Semester.Repositories;
@@ -35,7 +36,7 @@ namespace OOP_Semester.ViewModels
         public string HeaderTitle => IsRegisterMode ? "Tạo tài khoản mới" : "Xin chào! 👋";
         public string SubmitButtonText => IsRegisterMode ? "Đăng ký" : "Đăng nhập";
 
-        // --- 2. Commands (Chỉ dùng cho việc chuyển Tab) ---
+        // --- 2. Commands ---
         public ICommand LoginTabCommand { get; }
         public ICommand RegisterTabCommand { get; }
 
@@ -44,60 +45,90 @@ namespace OOP_Semester.ViewModels
             _userRepo = userRepo;
             _mainViewModel = mainViewModel;
 
-            // Logic chuyển đổi qua lại giữa Login và Register
             LoginTabCommand = new RelayCommand(o => IsRegisterMode = false);
             RegisterTabCommand = new RelayCommand(o => IsRegisterMode = true);
         }
 
-        // --- 3. HÀM QUAN TRỌNG ĐANG BỊ THIẾU ---
-        // Đây chính là hàm mà AuthView.xaml.cs đang gọi. 
-        // Nó nhận vào 2 chuỗi string thay vì object.
-        public void HandleSubmit(string password, string confirmPass)
+        // --- 3. OVERLOAD 1: XỬ LÝ ĐĂNG NHẬP (Login) ---
+        public void HandleSubmit(string password)
         {
-            // Kiểm tra nhập liệu cơ bản
-            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Thông báo");
+                MessageBox.Show("Vui lòng nhập tài khoản và mật khẩu!");
                 return;
             }
 
-            if (IsRegisterMode)
+            try
             {
-                // --- LOGIC ĐĂNG KÝ ---
-                if (password != confirmPass)
-                {
-                    MessageBox.Show("Mật khẩu xác nhận không khớp!", "Lỗi");
-                    return;
-                }
+                var user = _userRepo.Login(Username, password);
 
-                var newUser = new Models.User
+                if (user != null)
+                {
+                    // --- SỬA ĐỔI: Chuyển màn hình thay vì hiện MessageBox ---
+                    // Giả sử MainViewModel có thuộc tính CurrentView để thay đổi giao diện
+                    // Em có thể truyền 'user' vào HomeViewModel để hiển thị thông tin người dùng
+                    _mainViewModel.NavigateToHome(user);
+                }
+                else
+                {
+                    MessageBox.Show("Sai tài khoản hoặc mật khẩu!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi hệ thống: " + ex.Message);
+            }
+        }
+
+        // --- 4. OVERLOAD 2: XỬ LÝ ĐĂNG KÝ (Register) ---
+        public void HandleSubmit(string password, string confirmPass)
+        {
+            if (password != confirmPass)
+            {
+                MessageBox.Show("Mật khẩu xác nhận không khớp!");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(password))
+            {
+                MessageBox.Show("Vui lòng nhập đủ thông tin đăng ký!");
+                return;
+            }
+
+            try
+            {
+                var newUser = new User
                 {
                     Account = Username,
                     Password = password,
-                    Role = UserRole.User // (Bỏ comment nếu model User có cột Role)
+                    Name = Username,
+                    Role = UserRole.User,
+                    CreatedAt = DateTime.Now,
+                    GoldAmount = 0,
+                    VacationMode = false,
+                    Avatar = "Images\\System\\DefaultAvatar.png"
                 };
 
-                if (_userRepo.Register(newUser))
+                bool isSuccess = _userRepo.Register(newUser);
+
+                if (isSuccess)
                 {
-                    MessageBox.Show("Đăng ký thành công! Hãy đăng nhập.");
-                    IsRegisterMode = false; // Tự động chuyển về tab Đăng nhập
+                    MessageBox.Show("Đăng ký thành công! Vui lòng đăng nhập.");
+
+                    // --- SỬA ĐỔI: Chuyển về Login nhưng GIỮ LẠI Username ---
+                    IsRegisterMode = false;
+
+                    // Dòng dưới đây đã bị xóa để Username vẫn hiện trên ô input
+                    // Username = "";  <-- XÓA DÒNG NÀY
                 }
                 else
                 {
-                    MessageBox.Show("Tên tài khoản đã tồn tại!", "Lỗi");
+                    MessageBox.Show("Tài khoản đã tồn tại hoặc lỗi tạo user.");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                // --- LOGIC ĐĂNG NHẬP ---
-                if (_userRepo.Login(Username, password))
-                {
-                    _mainViewModel.NavigateToHome();
-                }
-                else
-                {
-                    MessageBox.Show("Sai tài khoản hoặc mật khẩu!", "Lỗi");
-                }
+                MessageBox.Show("Lỗi đăng ký: " + ex.Message);
             }
         }
     }

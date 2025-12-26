@@ -13,10 +13,10 @@ namespace OOP_Semester.Repositories
             _context = context;
         }
 
-        public bool Login(string username, string password)
+        public User? Login(string username, string password)
         {
             // Sửa u.Account -> u.Username (tên cột chuẩn trong DB)
-            return _context.Users.Any(u => u.Account == username && u.Password == password);
+            return _context.Users.FirstOrDefault(u => u.Account == username && u.Password == password);
         }
 
         // Sửa tham số đầu vào: Nhận trực tiếp đối tượng User

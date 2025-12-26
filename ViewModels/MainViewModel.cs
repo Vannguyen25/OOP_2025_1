@@ -1,5 +1,6 @@
 ﻿using OOP_Semester.Repositories;
 using OOP_Semester.Data;
+using OOP_Semester.Models;
 
 namespace OOP_Semester.ViewModels
 {
@@ -25,9 +26,9 @@ namespace OOP_Semester.ViewModels
             CurrentView = new AuthViewModel(userRepo, this);
         }
 
-        public void NavigateToHome()
+        public void NavigateToHome(User session)
         {
-            CurrentView = new HomeViewModel();
+            CurrentView = new HomeViewModel(session);
         }
     }
 }
